@@ -1,7 +1,11 @@
 package ru.chaplyginma;
 
+import ru.chaplyginma.server.EchoServer;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        EchoServer echoServer = new EchoServer(11111);
+
+        echoServer.start();
     }
 }
