@@ -66,7 +66,7 @@ public class EchoClient implements AutoCloseable {
         try {
             return in.readLine();
         } catch (IOException e) {
-            throw new StreamException("Can't read response from in stream", e);
+            throw new StreamException("Connection to server closed", e);
         }
     }
 

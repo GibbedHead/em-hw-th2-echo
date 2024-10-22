@@ -44,7 +44,6 @@ public class Main {
                 }
 
             }
-
         } catch (SocketException | StreamException e) {
             System.err.println("Error: " + e.getMessage());
         }
