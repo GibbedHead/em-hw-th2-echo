@@ -11,6 +11,10 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
+/**
+ * This class handles client interactions for the EchoServer.
+ * Each instance is responsible for processing communication with a single client.
+ */
 public class ClientHandler implements Runnable {
 
     private static final String EXIT_COMMAND = "!exit";
@@ -18,11 +22,19 @@ public class ClientHandler implements Runnable {
     private final Socket socket;
     private final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
-
+    /**
+     * Constructs a ClientHandler for the specified client socket.
+     *
+     * @param socket the client socket to handle
+     */
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * Runs the client handling logic in a separate thread.
+     * This method processes messages received from the client.
+     */
     @Override
     public void run() {
         logger.info("{}: Client thread started", Thread.currentThread().getName());

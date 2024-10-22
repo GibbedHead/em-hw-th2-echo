@@ -12,6 +12,11 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class implements a multithreaded TCP Echo Server.
+ * It listens for incoming client connections on a specified port
+ * and handles each connection in a separate thread using a thread pool.
+ */
 public class EchoServer extends Thread {
 
     private static final int MAX_CONNECTIONS = 10;
@@ -20,11 +25,21 @@ public class EchoServer extends Thread {
     private ThreadPoolExecutor pool;
     private boolean running = true;
 
+    /**
+     * Constructs an EchoServer with the specified port.
+     *
+     * @param port the port number to listen on
+     */
     public EchoServer(int port) {
         super("EchoServerThread");
         this.port = port;
     }
 
+    /**
+     * Starts the server and listens for incoming client connections.
+     * It accepts a maximum number of concurrent connections defined
+     * by {@link #MAX_CONNECTIONS}.
+     */
     @Override
     public void run() {
         startServer();
