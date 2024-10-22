@@ -9,10 +9,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoServer extends Thread {
 
@@ -39,7 +37,9 @@ public class EchoServer extends Thread {
             logger.info("EchoServer listening on port {}", port);
 
             while (running) {
-                handleClient(serverSocket);
+                if (pool.getActiveCount() < MAX_CONNECTIONS) {
+                    handleClient(serverSocket);
+                }
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
@@ -98,8 +98,22 @@ public class EchoServer extends Thread {
                 0,
                 MAX_CONNECTIONS,
                 0L, TimeUnit.MILLISECONDS,
-                new SynchronousQueue<>()
+                new SynchronousQueue<>(),
+                getCustomNamedThreadFactory()
         );
+    }
+
+    private ThreadFactory getCustomNamedThreadFactory() {
+        return new ThreadFactory() {
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable r) {
+                String nameTemplate = "EchoServer-ClientThread-%d";
+                String threadName = String.format(nameTemplate, threadNumber.getAndIncrement());
+                return new Thread(r, threadName);
+            }
+        };
     }
 
     public void stopServer() {
