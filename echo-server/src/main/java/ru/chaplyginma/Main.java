@@ -3,9 +3,14 @@ package ru.chaplyginma;
 import ru.chaplyginma.server.EchoServer;
 
 public class Main {
-    public static void main(String[] args) {
-        EchoServer echoServer = new EchoServer(11111);
+    public static void main(String[] args) throws InterruptedException {
+        EchoServer echoServerThread = new EchoServer(11111);
 
-        echoServer.start();
+        echoServerThread.start();
+
+        Thread.sleep(20000);
+        echoServerThread.stopServer();
+
+        echoServerThread.join();
     }
 }
